@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="style.css" rel="stylesheet" type="text/css">
+    <script src="https://kit.fontawesome.com/4439e3b362.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <header class="container-fluid bg-dark text-center p-2">
+        <h1 class="text-white">Weather Dashboard</h1>
+    </header>
+
+    <div class="container-fluid row m-0 p-0">
+        <div class="col-4 search-block bg-light border">
+            <h4 class="my-4">Search for a City:</h4>
+            <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" placeholder="City Name" aria-label="Search">
+                <button class="btn btn-outline-light bg-primary my-2 my-sm-0" type="submit"><i class="fas fa-search"></i></button>
+            </form>
+            <div class="container popular-cities my-3">
+                <button class="city p-2 btn bg-white border rounded-top w-100 text-left pl-4 text-secondary">
+                    Austin    
+                </button>
+                <button class="city p-2 btn bg-white border-bottom border-left border-right rounded-0 w-100 text-left pl-4 text-secondary">
+                    Chicago    
+                </button>
+                <button class="city p-2 btn bg-white border-bottom border-left border-right rounded-0 w-100 text-left pl-4 text-secondary">
+                    New York    
+                </button>
+                <button class="city p-2 btn bg-white border-bottom border-left border-right rounded-0 w-100 text-left pl-4 text-secondary">
+                    Orlando   
+                </button>
+                <button class="city p-2 btn bg-white border-bottom border-left border-right rounded-0 w-100 text-left pl-4 text-secondary">
+                    San Fransisco  
+                </button>
+                <button class="city p-2 btn bg-white border-bottom border-left border-right rounded-0 w-100 text-left pl-4 text-secondary">
+                    Seattle  
+                </button>
+                <button class="city p-2 btn bg-white border-bottom border-left border-right rounded-0 w-100 text-left pl-4 text-secondary">
+                    Denver   
+                </button>
+                <button class="city p-2 btn bg-white border-bottom border-left border-right rounded-bottom w-100 text-left pl-4 text-secondary">
+                    Atlanta
+                </button>
+            </div>
+
+        </div>
+        <div class="col-8 search-result bg-white border">
+
+        </div>
+    </div>
+</body>
+</html>
