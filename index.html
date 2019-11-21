@@ -19,7 +19,7 @@
             <h4 class="my-4">Search for a City:</h4>
             <form class="form-inline my-lg-0">
                 <input class="form-control mx-3 mr-sm-2 w-50 " type="search" placeholder="City Name" aria-label="Search">
-                <button class="btn btn-outline-light bg-primary my-2 my-sm-0" type="submit"><i class="fas fa-search"></i></button>
+                <button id="searchbtn" class="btn btn-outline-light bg-primary my-2 my-sm-0" type="submit"><i class="fas fa-search"></i></button>
             </form>
             <div class="container popular-cities my-3">
                 
@@ -52,9 +52,9 @@
         </div>
         <div class="col-md-8 col-lg-9 search-result bg-white border">
             <div class="current-weather border m-3 p-3 px-4">
-                <h2 class="my-3" id="currentCity">Atlanta <span id="date"> (11/21/2019) </span><span id="weathericon"></span></h2>
-                <p >Temperature: <span id="temp">90.0&#8457</span></p>
-                <p >Humidity: <span id="humidity">41%</span></p>
+                <h2 class="my-3"><span id="currentCity"></span> <span id="date"> (11/21/2019) </span><img id="weather_image" src=""></h2>
+                <p >Temperature: <span id="temp"></span>&#8457</p>
+                <p >Humidity: <span id="humidity"></span>%</p>
                 <p>Wind Speed: <span id="windspeed">4.7 MPH</span></p>
                 <p>UV Index: <span id="uv">9.49</span></p>
             </div>
@@ -107,4 +107,8 @@
         </div>
     </div>
 </body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script type="text/javascript" src="script.js"></script>
+
+
 </html>
