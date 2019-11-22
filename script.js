@@ -38,6 +38,7 @@ $(document).ready(function(){
         //get current weather data
         let weather= "http://api.openweathermap.org/data/2.5/weather?q=" + searchCity + "&APPID=" + appID;
         $.getJSON(weather, function(json){
+            console.log(weather); 
             $("#date").html(moment().format(" (M/D/YYYY) "));
             $("#currentCity").html(json.name); 
             $("#weather_image").attr("src", "http://openweathermap.org/img/w/" + json.weather[0].icon + ".png");
