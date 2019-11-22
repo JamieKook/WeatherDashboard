@@ -41,12 +41,19 @@ $(document).ready(function(){
                     $("#day"+dayCount).children(".card-icon").html("<img src=http://openweathermap.org/img/w/" + allForecastDays[i].weather[0].icon + ".png>" ); 
                     dayCount++; 
                 } 
-            }
-                
-             
+            }     
         })
     }); 
 
+    let defaultCityArr= ["Austin", "Chicago", "New York", "Orlando", "San Fransisco", " Seattle", "Denver", "Atlanta"]; 
+    function populateCity(arr){
+        let cityId=1; 
+        for (let i=0; i<8; i++){
+            $("#city"+cityId).html(arr[i]); 
+            cityId++; 
+        }
+    }
+    populateCity(defaultCityArr); 
 })
 
 
