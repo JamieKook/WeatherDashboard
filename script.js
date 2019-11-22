@@ -8,9 +8,9 @@ $(document).ready(function(){
     
     $("button").on("click", function(){
         event.preventDefault();  
-        debugger; 
+
         let searchCity; 
-        if ($(this)===$("#searchbtn")){
+        if ($(this).attr("id")=== "searchbtn"){
             searchCity= $(this).prev().val().trim();
         } else {
             searchCity=$(this).text(); 
