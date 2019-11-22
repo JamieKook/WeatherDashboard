@@ -8,6 +8,7 @@ $(document).ready(function(){
     
     $("#searchbtn").on("click", function(){
         event.preventDefault();  
+        debugger; 
         let searchCity= $(this).prev().val().trim();
 
         //Add to search history- invoking if search history not 404
@@ -18,6 +19,9 @@ $(document).ready(function(){
             }
             if (searchHistory.indexOf(searchCity) === -1){
                 searchHistory.push(searchCity);
+                if (searchHistory.length >8){
+                    searchHistory.splice(0,1); 
+                }
             }
             localStorage.setItem("searchHistory",JSON.stringify(searchHistory));
             console.log(localStorage); 
@@ -43,7 +47,7 @@ $(document).ready(function(){
             url: forecast,
             method: "GET"
         }).then(function(response){
-            addHistory(); 
+            addHistory();
             console.log(response); 
             let allForecastDays= response.list; 
             console.log(allForecastDays);
@@ -64,13 +68,19 @@ $(document).ready(function(){
                 } 
             }     
         })
+        //Trying to figure out how to repopulate on click
+        // populateCity(makeCityArr()); 
     }); 
 
     function makeCityArr(){
      
         let counter=0; 
-        searchHistory= JSON.parse(localStorage.getItem("searchHistory")); 
-        searchHistory=searchHistory.reverse(); 
+        searchHistory= JSON.parse(localStorage.getItem("searchHistory"));
+        if (searchHistory === null){
+            searchHistory =[]; 
+        } else {
+            searchHistory=searchHistory.reverse(); 
+        }
         for (let i=0; i<8; i++){
             if (searchHistory[i]!== undefined){
                 cities.push(searchHistory[i]); 
@@ -85,10 +95,7 @@ $(document).ready(function(){
                 counter++; 
             }
         }
-        
-        console.log(searchHistory); 
-        console.log(defaultCityArr); 
-        console.log(cities); 
+        return cities; 
     }
 
     function populateCity(arr){
@@ -98,8 +105,8 @@ $(document).ready(function(){
             cityId++; 
         }
     }
-    makeCityArr(); 
-    populateCity(cities);  
+
+    populateCity(makeCityArr());  
 })
 
 
