@@ -6,10 +6,17 @@ $(document).ready(function(){
     let appID = "2283f8cb8d1d8568c222f4ed3459c3b4";
     
     
-    $("#searchbtn").on("click", function(){
+    $("button").on("click", function(){
         event.preventDefault();  
-   
-        let searchCity= $(this).prev().val().trim();
+        debugger; 
+        let searchCity; 
+        if ($(this)===$("#searchbtn")){
+            searchCity= $(this).prev().val().trim();
+        } else {
+            searchCity=$(this).text(); 
+        }
+        console.log(searchCity); 
+        
 
         //Add to search history- invoking if search history not 404
         function addHistory(){
@@ -71,11 +78,7 @@ $(document).ready(function(){
             populateCity(cities); 
             console.log(searchHistory); 
             console.log(cities);   
-        })
-     
-        //Trying to figure out how to repopulate on click
-        
-
+        })   
     }); 
 
     function makeCityArr(){
