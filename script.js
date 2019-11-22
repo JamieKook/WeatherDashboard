@@ -91,8 +91,10 @@ $(document).ready(function(){
         }
         if (cities.length<8){
             for (let j=0; counter < 8; j++){
-                cities.push(defaultCityArr[j]);
-                counter++; 
+                if (cities.indexOf(defaultCityArr[j])=== -1){
+                    cities.push(defaultCityArr[j]);
+                    counter++; 
+                }  
             }
         }
         return cities; 
