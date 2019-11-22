@@ -25,6 +25,7 @@ $(document).ready(function(){
                 searchHistory=[]; 
             }
             if (searchHistory.indexOf(searchCity) === -1){
+                
                 searchHistory.push(searchCity);
                 if (searchHistory.length >8){
                     searchHistory.splice(0,1); 
@@ -117,6 +118,17 @@ $(document).ready(function(){
             cityId++; 
         }
     }
+
+    function setDefault(){
+        debugger; 
+        event.preventDefault(); 
+        searchHistory=[]; 
+        cities=[]; 
+        localStorage.setItem("searchHistory", JSON.stringify(searchHistory)); 
+        populateCity(defaultCityArr); 
+    }
+
+    $("#clear").on("click", setDefault); 
 
     populateCity(makeCityArr());  
 })
