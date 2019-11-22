@@ -8,7 +8,7 @@ $(document).ready(function(){
     
     $("#searchbtn").on("click", function(){
         event.preventDefault();  
-        let searchCity= $(this).prev().val();
+        let searchCity= $(this).prev().val().trim();
 
         //Add to search history- invoking if search history not 404
         function addHistory(){
@@ -16,10 +16,12 @@ $(document).ready(function(){
             if (searchHistory === null){
                 searchHistory=[]; 
             }
-            if (searchHistory.indexOf(searchHistory) === -1){
+            if (searchHistory.indexOf(searchCity) === -1){
                 searchHistory.push(searchCity);
             }
             localStorage.setItem("searchHistory",JSON.stringify(searchHistory));
+            console.log(localStorage); 
+            console.log(searchHistory); 
         }
 
         //get current weather data
@@ -65,24 +67,29 @@ $(document).ready(function(){
     }); 
 
     function makeCityArr(){
+     
         let counter=0; 
+        searchHistory= JSON.parse(localStorage.getItem("searchHistory")); 
+        searchHistory=searchHistory.reverse(); 
         for (let i=0; i<8; i++){
-            if (searchHistory[i]!== undefinded){
+            if (searchHistory[i]!== undefined){
                 cities.push(searchHistory[i]); 
                 counter++; 
+            } else {
+                break; 
             }
-            console.log(searchHistory); 
-            console.log(cities); 
-            if (cities.length<8){
-                for (let j=0; counter < 8; j++){
-                    cities.push(defaultCityArr[j]);
-                    counter++; 
-                }
-            }
-            console.log(cities); 
         }
+        if (cities.length<8){
+            for (let j=0; counter < 8; j++){
+                cities.push(defaultCityArr[j]);
+                counter++; 
+            }
+        }
+        
+        console.log(searchHistory); 
+        console.log(defaultCityArr); 
+        console.log(cities); 
     }
-
 
     function populateCity(arr){
         let cityId=1; 
@@ -91,8 +98,8 @@ $(document).ready(function(){
             cityId++; 
         }
     }
-    // makeCityArr(); 
-    populateCity(defaultCityArr);  
+    makeCityArr(); 
+    populateCity(cities);  
 })
 
 
