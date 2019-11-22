@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Weather Dashboard</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link href="style.css" rel="stylesheet" type="text/css">
     <script src="https://kit.fontawesome.com/4439e3b362.js" crossorigin="anonymous"></script>
+   
 </head>
 <body>
     <header class="container-fluid bg-dark text-center p-2">
@@ -52,53 +53,52 @@
         </div>
         <div class="col-md-8 col-lg-9 search-result bg-white border">
             <div class="current-weather border m-3 p-3 px-4">
-                <h2 class="my-3"><span id="currentCity"></span> <span id="date"> (11/21/2019) </span><img id="weather_image" src=""></h2>
-                <p >Temperature: <span id="temp"></span>&#8457</p>
-                <p >Humidity: <span id="humidity"></span>%</p>
-                <p>Wind Speed: <span id="windspeed">4.7 MPH</span></p>
-                <p>UV Index: <span id="uv">9.49</span></p>
+                <h2 class="my-3"><span id="currentCity"></span> <span id="date"></span><img id="weather_image" src=""></h2>
+                <p >Temperature: <span id="temp"></span></p>
+                <p >Humidity: <span id="humidity"></span></p>
+                <p>Wind Speed: <span id="windspeed"></span></p>
             </div>
             <div class="forecast m-3">
                 <h3>5-Day Forecast: </h3>
                 <div class="card-deck">
                     <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
-                        <div class="card-body">
-                            <h6 class="card-date">11/21/2019</h5>
+                        <div id="day1" class="card-body">
+                            <h6 class="card-date"></h5>
                             <div class="card-icon"></div>
-                            <p class="card-temp">Temp: <span id="card-temp-1">86.8&#8457</span></p>
-                            <p class="card-humid">Humidity <span id="card-humid-1">43%</span></p>
+                            <p class="card-temp"></p>
+                            <p class="card-humid"></p>
                         </div>
                     </div>
                     <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
-                        <div class="card-body">
-                            <h6 class="card-date">11/21/2019</h5>
+                        <div id="day2" class="card-body">
+                            <h6 class="card-date"></h5>
                             <div class="card-icon"></div>
-                            <p class="card-temp">Temp: <span id="card-temp-1">86.8&#8457</span></p>
-                            <p class="card-humid">Humidity <span id="card-humid-1">43%</span></p>
+                            <p class="card-temp"></p>
+                            <p class="card-humid"></p>
                         </div>
                     </div>
                     <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
-                        <div class="card-body">
-                            <h6 class="card-date">11/21/2019</h5>
+                        <div id="day3" class="card-body">
+                            <h6 class="card-date"></h5>
                             <div class="card-icon"></div>
-                            <p class="card-temp">Temp: <span id="card-temp-1">86.8&#8457</span></p>
-                            <p class="card-humid">Humidity <span id="card-humid-1">43%</span></p>
+                            <p class="card-temp"></p>
+                            <p class="card-humid"></p>
                         </div>
                     </div>
                     <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
-                        <div class="card-body">
-                            <h6 class="card-date">11/21/2019</h5>
+                        <div id="day4" class="card-body">
+                            <h6 class="card-date"></h5>
                             <div class="card-icon"></div>
-                            <p class="card-temp">Temp: <span id="card-temp-1">86.8&#8457</span></p>
-                            <p class="card-humid">Humidity <span id="card-humid-1">43%</span></p>
+                            <p class="card-temp"></p>
+                            <p class="card-humid"></p>
                         </div>
                     </div>
                     <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
-                        <div class="card-body">
-                            <h6 class="card-date">11/21/2019</h5>
+                        <div id="day5" class="card-body">
+                            <h6 class="card-date"></h5>
                             <div class="card-icon"></div>
-                            <p class="card-temp">Temp: <span id="card-temp-1">86.8&#8457</span></p>
-                            <p class="card-humid">Humidity <span id="card-humid-1">43%</span></p>
+                            <p class="card-temp"></p>
+                            <p class="card-humid"></p>
                         </div>
                     </div>
                     
@@ -108,6 +108,7 @@
     </div>
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 <script type="text/javascript" src="script.js"></script>
 
 
