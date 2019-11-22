@@ -8,7 +8,7 @@ $(document).ready(function(){
     
     $("#searchbtn").on("click", function(){
         event.preventDefault();  
-        debugger; 
+   
         let searchCity= $(this).prev().val().trim();
 
         //Add to search history- invoking if search history not 404
@@ -66,14 +66,20 @@ $(document).ready(function(){
                     $("#day"+dayCount).children(".card-icon").html("<img src=http://openweathermap.org/img/w/" + allForecastDays[i].weather[0].icon + ".png>" ); 
                     dayCount++; 
                 } 
-            }     
+            }  
+            makeCityArr(); 
+            populateCity(cities); 
+            console.log(searchHistory); 
+            console.log(cities);   
         })
+     
         //Trying to figure out how to repopulate on click
-        // populateCity(makeCityArr()); 
+        
+
     }); 
 
     function makeCityArr(){
-     
+        cities=[];
         let counter=0; 
         searchHistory= JSON.parse(localStorage.getItem("searchHistory"));
         if (searchHistory === null){
