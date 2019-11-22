@@ -1,14 +1,31 @@
+let searchHistory=[]; 
+let defaultCityArr= ["Austin", "Chicago", "New York", "Orlando", "San Fransisco", " Seattle", "Denver", "Atlanta"]; 
+let cities=[]
 
 $(document).ready(function(){
     let appID = "2283f8cb8d1d8568c222f4ed3459c3b4";
+    
+    
     $("#searchbtn").on("click", function(){
-        event.preventDefault(); 
-        $("#date").html(moment().format(" (M/D/YYYY) ")); 
+        event.preventDefault();  
         let searchCity= $(this).prev().val();
+
+        //Add to search history- invoking if search history not 404
+        function addHistory(){
+            searchHistory=JSON.parse(localStorage.getItem("searchHistory"));
+            if (searchHistory === null){
+                searchHistory=[]; 
+            }
+            if (searchHistory.indexOf(searchHistory) === -1){
+                searchHistory.push(searchCity);
+            }
+            localStorage.setItem("searchHistory",JSON.stringify(searchHistory));
+        }
+
+        //get current weather data
         let weather= "http://api.openweathermap.org/data/2.5/weather?q=" + searchCity + "&APPID=" + appID;
-        console.log(weather); 
         $.getJSON(weather, function(json){
-            console.log(json); 
+            $("#date").html(moment().format(" (M/D/YYYY) "));
             $("#currentCity").html(json.name); 
             $("#weather_image").attr("src", "http://openweathermap.org/img/w/" + json.weather[0].icon + ".png");
             $("#temp").html(((json.main.temp-273.15) * 9/5 + 32).toFixed(1)+"&#8457");
@@ -19,10 +36,12 @@ $(document).ready(function(){
         
         let forecast="http://api.openweathermap.org/data/2.5/forecast?q=" + searchCity +"&units=imperial&APPID=" + appID;
         
+        //get forecast data
         $.ajax({
             url: forecast,
             method: "GET"
         }).then(function(response){
+            addHistory(); 
             console.log(response); 
             let allForecastDays= response.list; 
             console.log(allForecastDays);
@@ -45,7 +64,26 @@ $(document).ready(function(){
         })
     }); 
 
-    let defaultCityArr= ["Austin", "Chicago", "New York", "Orlando", "San Fransisco", " Seattle", "Denver", "Atlanta"]; 
+    function makeCityArr(){
+        let counter=0; 
+        for (let i=0; i<8; i++){
+            if (searchHistory[i]!== undefinded){
+                cities.push(searchHistory[i]); 
+                counter++; 
+            }
+            console.log(searchHistory); 
+            console.log(cities); 
+            if (cities.length<8){
+                for (let j=0; counter < 8; j++){
+                    cities.push(defaultCityArr[j]);
+                    counter++; 
+                }
+            }
+            console.log(cities); 
+        }
+    }
+
+
     function populateCity(arr){
         let cityId=1; 
         for (let i=0; i<8; i++){
@@ -53,7 +91,8 @@ $(document).ready(function(){
             cityId++; 
         }
     }
-    populateCity(defaultCityArr); 
+    // makeCityArr(); 
+    populateCity(defaultCityArr);  
 })
 
 
