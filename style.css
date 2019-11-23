@@ -12,3 +12,10 @@
     overflow: scroll;
 }
 
+#mapquest {
+    max-width: 200px; 
+}
+
+.current-weather{
+    overflow: scroll; 
+}

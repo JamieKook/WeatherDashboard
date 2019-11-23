@@ -7,6 +7,7 @@ $(document).ready(function(){
     let mapquestID="Ro62gR6y6GdOzLZCJbOTDKhK50QK8o1r";
     let lat;
     let lon;
+    let state; 
     
     
     
@@ -36,8 +37,7 @@ $(document).ready(function(){
                 }
             }
             localStorage.setItem("searchHistory",JSON.stringify(searchHistory));
-            console.log(localStorage); 
-            console.log(searchHistory); 
+     
         }
 
         //get current weather data
@@ -62,12 +62,18 @@ $(document).ready(function(){
                 method: "GET"
             }).then(function(address){
                 console.log(address);
+                state=address.results[0].locations[0].adminArea3;
                 $("#currentState").html(", "+address.results[0].locations[0].adminArea3); 
                 let imageurl= address.results[0].locations[0].mapUrl; 
                 imageurl= imageurl.split(":");
                 console.log(imageurl); 
                 let newUrl="https:"+imageurl[1]; 
-                $("#mapquest").attr("src",newUrl);
+                let mapurl = "https://www.mapquestapi.com/staticmap/v5/map?key="+mapquestID+"&center="+searchCity+","+state+"&size=@2x";
+                $("#mapquest").attr("src",mapurl);
+
+                //get map
+               
+                console.log(mapurl); 
             })
         })
         
@@ -99,9 +105,7 @@ $(document).ready(function(){
                 } 
             }  
             makeCityArr(); 
-            populateCity(cities); 
-            console.log(searchHistory); 
-            console.log(cities);   
+            populateCity(cities);   
         })   
 
         
