@@ -9,6 +9,7 @@ $(document).ready(function(){
     let lon;
     
     
+    
     $("button").on("click", function(){
         event.preventDefault();  
 
@@ -61,7 +62,8 @@ $(document).ready(function(){
                 method: "GET"
             }).then(function(address){
                 console.log(address);
-                console.log(address.results[0].locations[0].adminArea3); 
+                $("#currentState").html(", "+address.results[0].locations[0].adminArea3); 
+                $("#mapquest").attr("src",address.results[0].locations[0].mapUrl);
             })
         })
         
