@@ -92,7 +92,7 @@ $(document).ready(function(){
         })  
     }
 
-    //use lat and lon to find state and city name- option function parameters to wait for data (city and state)
+    //use lat and lon to find state and city name plus image- option function parameters to wait for data (city and state)
     //and creates search history during this function using updated search city name to avoid repeated history
     function LatLonStateFinder(waitfxn1, waitfxn2){
         let locationurl= "https://www.mapquestapi.com/geocoding/v1/reverse?key="+mapquestID+"&location="+lat+","+lon+"&includeRoadMetadata=true&includeNearestIntersection=true"; 
@@ -200,9 +200,7 @@ $(document).ready(function(){
     }); 
 
     //clear search history on click
-    $("#clear").on("click", setDefault); 
-
-    
+    $("#clear").on("click", setDefault);   
 })
 
 
