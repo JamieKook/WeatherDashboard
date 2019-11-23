@@ -1,5 +1,5 @@
 let searchHistory=[]; 
-let defaultCityArr= ["Austin", "Chicago", "New York", "Orlando", "San Fransisco", " Seattle", "Denver", "Atlanta"]; 
+let defaultCityArr= ["Austin", "Chicago", "New York", "Orlando", "San Francisco", " Seattle", "Denver", "Atlanta"]; 
 let cities=[]
 
 $(document).ready(function(){
@@ -8,160 +8,41 @@ $(document).ready(function(){
     let lat;
     let lon;
     let state; 
-    let Searchcity; 
+    let searchCity; 
+
+//functions for app
+    //----------------------------------------------------
+    //Add to search history- invoking if search history not 404, done in forecast data fxn 
+    function addHistory(){
+        searchHistory=JSON.parse(localStorage.getItem("searchHistory"));
+        if (searchHistory === null){
+            searchHistory=[]; 
+        }
+        if (searchHistory.indexOf(searchCity) === -1){     
+            searchHistory.push(searchCity);
+            if (searchHistory.length >8){
+                searchHistory.splice(0,1); 
+            }
+        }
+        localStorage.setItem("searchHistory",JSON.stringify(searchHistory));
     
-    navigator.geolocation.getCurrentPosition(function(position) {
-       lat= position.coords.latitude;
-       lon = position.coords.longitude; 
-       console.log("lat is "+lat+" and lon is "+lon); 
-        initailLocale(lat, lon); 
-      });
-    
+    }
+
+    //Initializes the page with current cities data given the lat and lon from the geolocation api
     function initailLocale(lat, lon){
-        //Get location information
-        let locationurl= "https://www.mapquestapi.com/geocoding/v1/reverse?key="+mapquestID+"&location="+lat+","+lon+"&includeRoadMetadata=true&includeNearestIntersection=true"; 
-        $.ajax({
-            url: locationurl,
-            method: "GET"
-        }).then(function(address){
-            console.log(address);
-            state=address.results[0].locations[0].adminArea3;
-            searchCity=address.results[0].locations[0].adminArea5;
-            $("#currentState").html(", "+address.results[0].locations[0].adminArea3); 
-            // $("#currentCity").html(address.results[0].locations[0].adminArea5); 
-            let imageurl= address.results[0].locations[0].mapUrl; 
-            imageurl= imageurl.split(":");
-            console.log(imageurl); 
-            let newUrl="https:"+imageurl[1]; 
-            let mapurl = "https://www.mapquestapi.com/staticmap/v5/map?key="+mapquestID+"&center="+searchCity+","+state+"&size=@2x";
-            $("#mapquest").attr("src",mapurl);
-
-             //get current weather data
-            let weather= "https://api.openweathermap.org/data/2.5/weather?q=" + searchCity + "&APPID=" + appID;
-            $.getJSON(weather, function(json){
-                console.log(json); 
-                $("#date").html(moment().format(" (M/D/YYYY) "));
-                $("#currentCity").html(json.name); 
-                $("#weather_image").attr("src", "http://openweathermap.org/img/w/" + json.weather[0].icon + ".png");
-                $("#temp").html(((json.main.temp-273.15) * 9/5 + 32).toFixed(1)+"&#8457");
-                $("#humidity").html(json.main.humidity+"%");
-                $("#windspeed").html(((json.wind.speed)* 2.237).toFixed(1)+" MPH"); 
-                $("#description").html("Description: "+json.weather[0].description);
-                // lat= json.coord.lat; 
-                // lon= json.coord.lon;
-                console.log("lat is "+lat+" and lon is "+lon);
-            })
-            //get forecast data
-            let forecast="https://api.openweathermap.org/data/2.5/forecast?q=" + searchCity +"&units=imperial&APPID=" + appID;
-            $.ajax({
-                url: forecast,
-                method: "GET"
-            }).then(function(response){
-                // addHistory();
-                console.log(response); 
-                let allForecastDays= response.list; 
-                console.log(allForecastDays);
-                let dayCount=1; 
-                for (let i=0; i <allForecastDays.length; i++){
-                    let dateFull= allForecastDays[i].dt_txt; 
-                    let date=dateFull.split(" ")[0];
-                    let time= dateFull.split(" ")[1];  
-                    if(time === "15:00:00"){
-                        let year= date.split("-")[0];
-                        let month=date.split("-")[1];
-                        let day = date.split("-")[2];
-                        $("#day"+dayCount).children(".card-date").html(month+"/"+day+"/"+year); 
-                        $("#day"+dayCount).children(".card-temp").html("Temp: "+allForecastDays[i].main.temp.toFixed(1)+"&#8457"); 
-                        $("#day"+dayCount).children(".card-humid").html("Humidity: " +allForecastDays[i].main.humidity+"%"); 
-                        $("#day"+dayCount).children(".card-icon").html("<img src=http://openweathermap.org/img/w/" + allForecastDays[i].weather[0].icon + ".png>" ); 
-                        dayCount++; 
-                    } 
-                }  
-               
-            })   
-            
-         });
-
-
-        
+        LatLonStateFinder(currentWeather, forecastData);    
     } 
     
-    $("button").on("click", function(){
-        event.preventDefault();  
-
-        if ($(this).attr("id")=== "searchbtn"){
-            searchCity= $(this).prev().val().trim();
-        } else {
-            searchCity=$(this).text(); 
-        }
-        console.log(searchCity); 
-        
-
-        //Add to search history- invoking if search history not 404
-        function addHistory(){
-            searchHistory=JSON.parse(localStorage.getItem("searchHistory"));
-            if (searchHistory === null){
-                searchHistory=[]; 
-            }
-            if (searchHistory.indexOf(searchCity) === -1){
-                
-                searchHistory.push(searchCity);
-                if (searchHistory.length >8){
-                    searchHistory.splice(0,1); 
-                }
-            }
-            localStorage.setItem("searchHistory",JSON.stringify(searchHistory));
-     
-        }
-
-        //get current weather data
-        let weather= "https://api.openweathermap.org/data/2.5/weather?q=" + searchCity + "&APPID=" + appID;
-        $.getJSON(weather, function(json){
-            console.log(json); 
-            $("#date").html(moment().format(" (M/D/YYYY) "));
-            $("#currentCity").html(json.name); 
-            $("#weather_image").attr("src", "http://openweathermap.org/img/w/" + json.weather[0].icon + ".png");
-            $("#temp").html(((json.main.temp-273.15) * 9/5 + 32).toFixed(1)+"&#8457");
-            $("#humidity").html(json.main.humidity+"%");
-            $("#windspeed").html(((json.wind.speed)* 2.237).toFixed(1)+" MPH"); 
-            $("#description").html("Description: "+json.weather[0].description);
-            lat= json.coord.lat; 
-            lon= json.coord.lon;
-            console.log("lat is "+lat+" and lon is "+lon); 
-
-            //Get location information
-            let locationurl= "https://www.mapquestapi.com/geocoding/v1/reverse?key="+mapquestID+"&location="+lat+","+lon+"&includeRoadMetadata=true&includeNearestIntersection=true"; 
-            $.ajax({
-                url: locationurl,
-                method: "GET"
-            }).then(function(address){
-                console.log(address);
-                state=address.results[0].locations[0].adminArea3;
-                $("#currentState").html(", "+address.results[0].locations[0].adminArea3); 
-                let imageurl= address.results[0].locations[0].mapUrl; 
-                imageurl= imageurl.split(":");
-                console.log(imageurl); 
-                let newUrl="https:"+imageurl[1]; 
-                let mapurl = "https://www.mapquestapi.com/staticmap/v5/map?key="+mapquestID+"&center="+searchCity+","+state+"&size=@2x";
-                $("#mapquest").attr("src",mapurl);
-
-                //get map
-               
-                console.log(mapurl); 
-            })
-        })
-        
+    //Gets 5 day forecast 
+    function forecastData(){
         let forecast="https://api.openweathermap.org/data/2.5/forecast?q=" + searchCity +"&units=imperial&APPID=" + appID;
-        
-        //get forecast data
         $.ajax({
             url: forecast,
             method: "GET"
         }).then(function(response){
-            addHistory();
+            console.log("This is the 5 day forecast data: ");
             console.log(response); 
             let allForecastDays= response.list; 
-            console.log(allForecastDays);
             let dayCount=1; 
             for (let i=0; i <allForecastDays.length; i++){
                 let dateFull= allForecastDays[i].dt_txt; 
@@ -178,13 +59,72 @@ $(document).ready(function(){
                     dayCount++; 
                 } 
             }  
-            makeCityArr(); 
-            populateCity(cities);   
         })   
+    }
 
-        
-    }); 
+    //get current weather data- optional function parameter to wait for data (retrieves lat and lon)
+    function currentWeather(fxn1, fxn2){
+        let weather= "https://api.openweathermap.org/data/2.5/weather?q=" + searchCity + "&APPID=" + appID;
+        $.getJSON(weather, function(json){
+            console.log("This is the current weather data: ");
+            console.log(json); 
+            $("#date").html(moment().format(" (M/D/YYYY) "));
+            $("#currentCity").html(json.name); 
+            $("#weather_image").attr("src", "http://openweathermap.org/img/w/" + json.weather[0].icon + ".png");
+            $("#temp").html(((json.main.temp-273.15) * 9/5 + 32).toFixed(1)+"&#8457");
+            $("#humidity").html(json.main.humidity+"%");
+            $("#windspeed").html(((json.wind.speed)* 2.237).toFixed(1)+" MPH"); 
+            $("#description").html("Description: "+json.weather[0].description);
+            lat= json.coord.lat; 
+            lon= json.coord.lon;
+            console.log("lat is "+lat+" and lon is "+lon +". Data taken from current weather json"); 
+    
+            //Get location information
+            fxn1= fxn1 || undefined; 
+            if (fxn1 !== undefined){
+                fxn1(); 
+            }
 
+            fxn2= fxn2 || undefined; 
+            if (fxn2 !== undefined){
+                fxn2(); 
+            }
+        })  
+    }
+
+    //use lat and lon to find state and city name plus image- option function parameters to wait for data (city and state)
+    //and creates search history during this function using updated search city name to avoid repeated history
+    function LatLonStateFinder(waitfxn1, waitfxn2){
+        let locationurl= "https://www.mapquestapi.com/geocoding/v1/reverse?key="+mapquestID+"&location="+lat+","+lon+"&includeRoadMetadata=true&includeNearestIntersection=true"; 
+        $.ajax({
+            url: locationurl,
+            method: "GET"
+        }).then(function(address){
+            console.log("This is the address given the lat and lon: ");
+            console.log(address);
+            state=address.results[0].locations[0].adminArea3;
+            searchCity=address.results[0].locations[0].adminArea5;
+            console.log("After running latlon the city is "+searchCity); 
+            $("#currentState").html(", "+address.results[0].locations[0].adminArea3); 
+            let mapurl = "https://www.mapquestapi.com/staticmap/v5/map?key="+mapquestID+"&center="+searchCity+","+state+"&size=@2x";
+            $("#mapquest").attr("src",mapurl);
+            console.log("The saved search city name is " + searchCity);
+            addHistory();
+            makeCityArr(); 
+            populateCity(cities);
+
+            waitfxn1= waitfxn1 || undefined; 
+            if (waitfxn1 !== undefined){
+                waitfxn1(); 
+            }
+            waitfxn2= waitfxn2 || undefined; 
+            if (waitfxn2 !== undefined){
+                waitfxn2(); 
+            }
+        })
+    }
+
+    //create city array which combines the search history and default cities to get 8 city names
     function makeCityArr(){
         cities=[];
         let counter=0; 
@@ -213,6 +153,7 @@ $(document).ready(function(){
         return cities; 
     }
 
+    //populate the buttons on the search history with given array
     function populateCity(arr){
         let cityId=1; 
         for (let i=0; i<8; i++){
@@ -221,6 +162,7 @@ $(document).ready(function(){
         }
     }
 
+    //clear and reset search history to default cities
     function setDefault(){
         debugger; 
         event.preventDefault(); 
@@ -229,10 +171,36 @@ $(document).ready(function(){
         localStorage.setItem("searchHistory", JSON.stringify(searchHistory)); 
         populateCity(defaultCityArr); 
     }
+//-----------------------------------------------
+//invocation of functions here: 
 
-    $("#clear").on("click", setDefault); 
-
+    //set initial buttons of using saved history and default cities
     populateCity(makeCityArr());  
+
+    //get initial weather data using current position from geolocation
+    navigator.geolocation.getCurrentPosition(function(position) {
+       lat= position.coords.latitude;
+       lon = position.coords.longitude; 
+       console.log("lat is "+lat+" and lon is "+lon); 
+        initailLocale(lat, lon); 
+      });
+    
+    //button listeners to select data for selected cities
+    $("button").on("click", function(){
+        event.preventDefault();  
+
+        if ($(this).attr("id")=== "searchbtn"){
+            searchCity= $(this).prev().val().trim();
+        } else {
+            searchCity=$(this).text(); 
+        }
+        console.log("The inputed city is "+searchCity); 
+        currentWeather(LatLonStateFinder);  
+        forecastData();          
+    }); 
+
+    //clear search history on click
+    $("#clear").on("click", setDefault);   
 })
 
 
