@@ -63,7 +63,11 @@ $(document).ready(function(){
             }).then(function(address){
                 console.log(address);
                 $("#currentState").html(", "+address.results[0].locations[0].adminArea3); 
-                $("#mapquest").attr("src",address.results[0].locations[0].mapUrl);
+                let imageurl= address.results[0].locations[0].mapUrl; 
+                imageurl= imageurl.split(":");
+                console.log(imageurl); 
+                let newUrl="https:"+imageurl[1]; 
+                $("#mapquest").attr("src",newUrl);
             })
         })
         
