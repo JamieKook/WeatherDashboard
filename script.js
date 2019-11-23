@@ -17,75 +17,6 @@ $(document).ready(function(){
         initailLocale(lat, lon); 
       });
     
-    function initailLocale(lat, lon){
-        //Get location information
-        let locationurl= "https://www.mapquestapi.com/geocoding/v1/reverse?key="+mapquestID+"&location="+lat+","+lon+"&includeRoadMetadata=true&includeNearestIntersection=true"; 
-        $.ajax({
-            url: locationurl,
-            method: "GET"
-        }).then(function(address){
-            console.log(address);
-            state=address.results[0].locations[0].adminArea3;
-            searchCity=address.results[0].locations[0].adminArea5;
-            $("#currentState").html(", "+address.results[0].locations[0].adminArea3); 
-            // $("#currentCity").html(address.results[0].locations[0].adminArea5); 
-            let imageurl= address.results[0].locations[0].mapUrl; 
-            imageurl= imageurl.split(":");
-            console.log(imageurl); 
-            let newUrl="https:"+imageurl[1]; 
-            let mapurl = "https://www.mapquestapi.com/staticmap/v5/map?key="+mapquestID+"&center="+searchCity+","+state+"&size=@2x";
-            $("#mapquest").attr("src",mapurl);
-
-             //get current weather data
-            let weather= "https://api.openweathermap.org/data/2.5/weather?q=" + searchCity + "&APPID=" + appID;
-            $.getJSON(weather, function(json){
-                console.log(json); 
-                $("#date").html(moment().format(" (M/D/YYYY) "));
-                $("#currentCity").html(json.name); 
-                $("#weather_image").attr("src", "http://openweathermap.org/img/w/" + json.weather[0].icon + ".png");
-                $("#temp").html(((json.main.temp-273.15) * 9/5 + 32).toFixed(1)+"&#8457");
-                $("#humidity").html(json.main.humidity+"%");
-                $("#windspeed").html(((json.wind.speed)* 2.237).toFixed(1)+" MPH"); 
-                $("#description").html("Description: "+json.weather[0].description);
-                // lat= json.coord.lat; 
-                // lon= json.coord.lon;
-                console.log("lat is "+lat+" and lon is "+lon);
-            })
-            //get forecast data
-            let forecast="https://api.openweathermap.org/data/2.5/forecast?q=" + searchCity +"&units=imperial&APPID=" + appID;
-            $.ajax({
-                url: forecast,
-                method: "GET"
-            }).then(function(response){
-                // addHistory();
-                console.log(response); 
-                let allForecastDays= response.list; 
-                console.log(allForecastDays);
-                let dayCount=1; 
-                for (let i=0; i <allForecastDays.length; i++){
-                    let dateFull= allForecastDays[i].dt_txt; 
-                    let date=dateFull.split(" ")[0];
-                    let time= dateFull.split(" ")[1];  
-                    if(time === "15:00:00"){
-                        let year= date.split("-")[0];
-                        let month=date.split("-")[1];
-                        let day = date.split("-")[2];
-                        $("#day"+dayCount).children(".card-date").html(month+"/"+day+"/"+year); 
-                        $("#day"+dayCount).children(".card-temp").html("Temp: "+allForecastDays[i].main.temp.toFixed(1)+"&#8457"); 
-                        $("#day"+dayCount).children(".card-humid").html("Humidity: " +allForecastDays[i].main.humidity+"%"); 
-                        $("#day"+dayCount).children(".card-icon").html("<img src=http://openweathermap.org/img/w/" + allForecastDays[i].weather[0].icon + ".png>" ); 
-                        dayCount++; 
-                    } 
-                }  
-               
-            })   
-            
-         });
-
-
-        
-    } 
-    
     $("button").on("click", function(){
         event.preventDefault();  
 
@@ -122,6 +53,11 @@ $(document).ready(function(){
     
     }
 
+    function initailLocale(lat, lon){
+
+        LatLonStateFinder(currentWeather, forecastData);    
+    } 
+    
     function forecastData(){
         let forecast="https://api.openweathermap.org/data/2.5/forecast?q=" + searchCity +"&units=imperial&APPID=" + appID;
     
@@ -180,7 +116,7 @@ $(document).ready(function(){
         })  
     }
 
-    function LatLonStateFinder(){
+    function LatLonStateFinder(waitfxn1, waitfxn2){
         let locationurl= "https://www.mapquestapi.com/geocoding/v1/reverse?key="+mapquestID+"&location="+lat+","+lon+"&includeRoadMetadata=true&includeNearestIntersection=true"; 
         $.ajax({
             url: locationurl,
@@ -188,13 +124,23 @@ $(document).ready(function(){
         }).then(function(address){
             console.log(address);
             state=address.results[0].locations[0].adminArea3;
+            searchCity=address.results[0].locations[0].adminArea5;
             $("#currentState").html(", "+address.results[0].locations[0].adminArea3); 
-            let imageurl= address.results[0].locations[0].mapUrl; 
-            imageurl= imageurl.split(":");
-            console.log(imageurl); 
-            let newUrl="https:"+imageurl[1]; 
+            // let imageurl= address.results[0].locations[0].mapUrl; 
+            // imageurl= imageurl.split(":");
+            // console.log(imageurl); 
+            // let newUrl="https:"+imageurl[1]; 
             let mapurl = "https://www.mapquestapi.com/staticmap/v5/map?key="+mapquestID+"&center="+searchCity+","+state+"&size=@2x";
             $("#mapquest").attr("src",mapurl);
+
+            waitfxn1= waitfxn1 || undefined; 
+            if (waitfxn1 !== undefined){
+                waitfxn1(); 
+            }
+            waitfxn2= waitfxn2 || undefined; 
+            if (waitfxn2 !== undefined){
+                waitfxn2(); 
+            }
         })
     }
 
