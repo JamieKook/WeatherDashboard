@@ -37,7 +37,7 @@ $(document).ready(function(){
         }
 
         //get current weather data
-        let weather= "http://api.openweathermap.org/data/2.5/weather?q=" + searchCity + "&APPID=" + appID;
+        let weather= "https://api.openweathermap.org/data/2.5/weather?q=" + searchCity + "&APPID=" + appID;
         $.getJSON(weather, function(json){
             console.log(weather); 
             $("#date").html(moment().format(" (M/D/YYYY) "));
@@ -49,7 +49,7 @@ $(document).ready(function(){
             $("#description").html("Description: "+json.weather[0].description); 
         })
         
-        let forecast="http://api.openweathermap.org/data/2.5/forecast?q=" + searchCity +"&units=imperial&APPID=" + appID;
+        let forecast="https://api.openweathermap.org/data/2.5/forecast?q=" + searchCity +"&units=imperial&APPID=" + appID;
         
         //get forecast data
         $.ajax({
