@@ -56,7 +56,7 @@ $(document).ready(function(){
             console.log("lat is "+lat+" and lon is "+lon); 
 
             //Get location information
-            let locationurl= "http://www.mapquestapi.com/geocoding/v1/reverse?key="+mapquestID+"&location="+lat+","+lon+"&includeRoadMetadata=true&includeNearestIntersection=true"; 
+            let locationurl= "https://www.mapquestapi.com/geocoding/v1/reverse?key="+mapquestID+"&location="+lat+","+lon+"&includeRoadMetadata=true&includeNearestIntersection=true"; 
             $.ajax({
                 url: locationurl,
                 method: "GET"
