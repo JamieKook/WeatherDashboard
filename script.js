@@ -4,6 +4,9 @@ let cities=[]
 
 $(document).ready(function(){
     let appID = "2283f8cb8d1d8568c222f4ed3459c3b4";
+    let mapquestID="Ro62gR6y6GdOzLZCJbOTDKhK50QK8o1r";
+    let lat;
+    let lon;
     
     
     $("button").on("click", function(){
@@ -39,14 +42,27 @@ $(document).ready(function(){
         //get current weather data
         let weather= "https://api.openweathermap.org/data/2.5/weather?q=" + searchCity + "&APPID=" + appID;
         $.getJSON(weather, function(json){
-            console.log(weather); 
+            console.log(json); 
             $("#date").html(moment().format(" (M/D/YYYY) "));
             $("#currentCity").html(json.name); 
             $("#weather_image").attr("src", "http://openweathermap.org/img/w/" + json.weather[0].icon + ".png");
             $("#temp").html(((json.main.temp-273.15) * 9/5 + 32).toFixed(1)+"&#8457");
             $("#humidity").html(json.main.humidity+"%");
             $("#windspeed").html(((json.wind.speed)* 2.237).toFixed(1)+" MPH"); 
-            $("#description").html("Description: "+json.weather[0].description); 
+            $("#description").html("Description: "+json.weather[0].description);
+            lat= json.coord.lat; 
+            lon= json.coord.lon;
+            console.log("lat is "+lat+" and lon is "+lon); 
+
+            //Get location information
+            let locationurl= "http://www.mapquestapi.com/geocoding/v1/reverse?key="+mapquestID+"&location="+lat+","+lon+"&includeRoadMetadata=true&includeNearestIntersection=true"; 
+            $.ajax({
+                url: locationurl,
+                method: "GET"
+            }).then(function(address){
+                console.log(address);
+                console.log(address.results[0].locations[0].adminArea3); 
+            })
         })
         
         let forecast="https://api.openweathermap.org/data/2.5/forecast?q=" + searchCity +"&units=imperial&APPID=" + appID;
@@ -81,6 +97,8 @@ $(document).ready(function(){
             console.log(searchHistory); 
             console.log(cities);   
         })   
+
+        
     }); 
 
     function makeCityArr(){
