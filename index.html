@@ -48,18 +48,19 @@
 
         </div>
         <div class="col-md-8 col-lg-9 search-result bg-white border">
-            <div class=" row current-weather border m-3 p-3 px-4">
+            <div class="current-weather border m-3 p-3 px-4">
                     <h2 class="my-3"><span id="currentCity"></span><span id="currentState"></span> <span id="date"></span><img id="weather_image" src=""></h2>
-                <div class="col-8">
-                    <p >Temperature: <span id="temp"></span></p>
-                    <p >Humidity: <span id="humidity"></span></p>
-                    <p>Wind Speed: <span id="windspeed"></span></p>
-                    <p id="description"></p>
+                <div class = "row">
+                    <div class="col-6">
+                        <p >Temperature: <span id="temp"></span></p>
+                        <p >Humidity: <span id="humidity"></span></p>
+                        <p>Wind Speed: <span id="windspeed"></span></p>
+                        <p id="description"></p>
+                    </div>
+                    <div class="col-6">
+                        <img id="mapquest" src=""> 
+                    </div>
                 </div>
-                <div class="col-4">
-                     <img id="mapquest" src=""> 
-                </div>
-                
             </div>
             <div class="forecast m-3">
                 <h3>5-Day Forecast: </h3>
