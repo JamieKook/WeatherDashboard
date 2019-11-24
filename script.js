@@ -56,7 +56,7 @@ $(document).ready(function(){
                     $("#day"+dayCount).children(".card-date").html(month+"/"+day+"/"+year); 
                     $("#day"+dayCount).children(".card-temp").html("Temp: "+allForecastDays[i].main.temp.toFixed(1)+"&#8457"); 
                     $("#day"+dayCount).children(".card-humid").html("Humidity: " +allForecastDays[i].main.humidity+"%"); 
-                    $("#day"+dayCount).children(".card-icon").html("<img src=http://openweathermap.org/img/w/" + allForecastDays[i].weather[0].icon + ".png>" ); 
+                    $("#day"+dayCount).children(".card-icon").html("<img src=https://openweathermap.org/img/w/" + allForecastDays[i].weather[0].icon + ".png>" ); 
                     dayCount++; 
                 } 
             }  
@@ -72,7 +72,7 @@ $(document).ready(function(){
             console.log(json); 
             searchCity=json.name;
             $("#currentCity").html(searchCity); 
-            $("#weather_image").attr("src", "http://openweathermap.org/img/w/" + json.weather[0].icon + ".png");
+            $("#weather_image").attr("src", "https://openweathermap.org/img/w/" + json.weather[0].icon + ".png");
             $("#temp").html(((json.main.temp-273.15) * 9/5 + 32).toFixed(1)+"&#8457");
             $("#humidity").html(json.main.humidity+"%");
             $("#windspeed").html(((json.wind.speed)* 2.237).toFixed(1)+" MPH"); 
