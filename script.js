@@ -30,7 +30,8 @@ $(document).ready(function(){
 
     //Initializes the page with current cities data given the lat and lon from the geolocation api
     function initailLocale(lat, lon){
-        LatLonStateFinder(currentWeather, forecastData);    
+        LatLonStateFinder(currentWeather, forecastData);   
+        $("#date").html(moment().format(" (M/D/YYYY) ")); 
     } 
     
     //Gets 5 day forecast 
@@ -63,13 +64,14 @@ $(document).ready(function(){
     }
 
     //get current weather data- optional function parameter to wait for data (retrieves lat and lon)
-    function currentWeather(fxn1, fxn2){
+    //and creates search history during this function using updated search city name to avoid repeated history
+    function currentWeather(fxn) {
         let weather= "https://api.openweathermap.org/data/2.5/weather?q=" + searchCity + "&APPID=" + appID;
         $.getJSON(weather, function(json){
             console.log("This is the current weather data: ");
             console.log(json); 
-            $("#date").html(moment().format(" (M/D/YYYY) "));
-            $("#currentCity").html(json.name); 
+            searchCity=json.name;
+            $("#currentCity").html(searchCity); 
             $("#weather_image").attr("src", "http://openweathermap.org/img/w/" + json.weather[0].icon + ".png");
             $("#temp").html(((json.main.temp-273.15) * 9/5 + 32).toFixed(1)+"&#8457");
             $("#humidity").html(json.main.humidity+"%");
@@ -78,22 +80,17 @@ $(document).ready(function(){
             lat= json.coord.lat; 
             lon= json.coord.lon;
             console.log("lat is "+lat+" and lon is "+lon +". Data taken from current weather json"); 
-    
-            //Get location information
-            fxn1= fxn1 || undefined; 
-            if (fxn1 !== undefined){
-                fxn1(); 
-            }
-
-            fxn2= fxn2 || undefined; 
-            if (fxn2 !== undefined){
-                fxn2(); 
+            console.log("The saved search city name is " + searchCity);
+            addHistory();
+            makeCityArr(); 
+            populateCity(cities);
+            if (fxn !== undefined){
+                fxn(); 
             }
         })  
     }
 
     //use lat and lon to find state and city name plus image- option function parameters to wait for data (city and state)
-    //and creates search history during this function using updated search city name to avoid repeated history
     function LatLonStateFinder(waitfxn1, waitfxn2){
         let locationurl= "https://www.mapquestapi.com/geocoding/v1/reverse?key="+mapquestID+"&location="+lat+","+lon+"&includeRoadMetadata=true&includeNearestIntersection=true"; 
         $.ajax({
@@ -108,16 +105,9 @@ $(document).ready(function(){
             $("#currentState").html(", "+address.results[0].locations[0].adminArea3); 
             let mapurl = "https://www.mapquestapi.com/staticmap/v5/map?key="+mapquestID+"&center="+searchCity+","+state+"&size=@2x";
             $("#mapquest").attr("src",mapurl);
-            console.log("The saved search city name is " + searchCity);
-            addHistory();
-            makeCityArr(); 
-            populateCity(cities);
-
-            waitfxn1= waitfxn1 || undefined; 
             if (waitfxn1 !== undefined){
                 waitfxn1(); 
             }
-            waitfxn2= waitfxn2 || undefined; 
             if (waitfxn2 !== undefined){
                 waitfxn2(); 
             }
@@ -164,7 +154,6 @@ $(document).ready(function(){
 
     //clear and reset search history to default cities
     function setDefault(){
-        debugger; 
         event.preventDefault(); 
         searchHistory=[]; 
         cities=[]; 
