@@ -9,10 +9,10 @@ Clone folder onto your own computer by forking the repository and using the "Clo
 ## Functionality 
 
 ### Selection of cities
-Users can select a city by either inputting the city's name in the search bar or by clicking on one of the cities listed. Upon clicking a search or city button, weather data will be gathered for the selected city. 
+Users can select a city by either inputting the city's name in the search bar or by clicking on one of the cities listed. Upon clicking search or on a listed city, weather data will be gathered for the selected city. 
 
 ### Current weather display
-This application displays the city, state, date, and map of the location for each inputted city. For the selected city, the current temperature, humidity, wind-speed, a weather icon, and a short weather description. Information is diplayed on the webpage. 
+This application displays the city, state, date, and map of the location for each inputted city. For the selected city, the current temperature, humidity, wind-speed, a weather icon, and a short weather description is diplayed on the webpage. 
 
 ![image of weather dashboard](images/dashboard.png)
 
